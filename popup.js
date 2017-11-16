@@ -9,6 +9,7 @@ var httpReq = new XMLHttpRequest();
 chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
     var tab = tabs[0].url;
     var link = "https://ilearn.marist.edu/portal";
+    
     console.log(JSON.stringify(tabs[1]) +"\n" +link);
     
     if(tab.startsWith(link)) {
@@ -86,6 +87,7 @@ function getCwid() {
         if(httpReq.readyState == 4 && httpReq.status == 200) {
             var cwid = JSON.parse(httpReq.responseText);
             console.log("cwid: "+cwid);
+            
             if(cwid.session_collection[0].userEid == null) {
                 console.log("Trying again for CWID...")
                 httpReq.send();
