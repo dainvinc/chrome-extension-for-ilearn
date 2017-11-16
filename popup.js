@@ -20,10 +20,7 @@ chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
         subListBtn.addEventListener("click", function() {
             fadeOut(subListBtn);
             goBack.style.display = "block";
-//            subListBtn.style.display = "none";  
-//            httpReq.addEventListener("progress", function(event) {
-                printListOfCourses();
-//            });    
+            printListOfCourses();
         }); 
     } else {
         chrome.tabs.create({url: "https://login.marist.edu/cas/login?service=https%3A%2F%2Filearn.marist.edu%2Fsakai-login-tool%2Fcontainer"});
@@ -31,31 +28,36 @@ chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
 });
 
 function printListOfCourses() {
+    console.log("Trying to get the List of courses...");
+    
+    httpReq.onreadystatechange = function() {
+            
+        if(httpReq.readyState == 4 && httpReq.status == 200) {
+            var courses = "";
+            var obj = JSON.parse(httpReq.responseText);
+            var courseLinkUrl = "https://ilearn.marist.edu/portal/site/";
+
+            console.log(courses.length);
+
+            for(var i=0; i<obj.gradebook_collection.length; i++) {
+                var newLi = document.createElement("LI");
+                var newA = document.createElement("a");
+
+                console.log(courseLinkUrl+""+obj.gradebook_collection[i].siteId);
+
+                courseListUl.appendChild(newLi);
+                newLi.appendChild(newA);
+                newA.setAttribute("href", courseLinkUrl+""+obj.gradebook_collection[i].siteId);
+                newA.setAttribute("target", "_blank");
+                newA.innerHTML = obj.gradebook_collection[i].siteName;
+            }
+        } else {
+            console.log("Something went wrong with the list of courses!");
+        }
+    }
+    
     httpReq.open("GET", "https://ilearn.marist.edu/direct/gradebook/my.json", false);
     httpReq.send();
-    
-    var courses = "";
-    var result = httpReq.responseText;
-    var obj = JSON.parse(result);
-    var courseLinkUrl = "https://ilearn.marist.edu/portal/site/";
-    
-    console.log(courses.length);
-    
-    for(var i=0; i<obj.gradebook_collection.length; i++) {
-        if(httpReq.status != 200) {
-            document.write("There's something wrong with the connection. Please, try again later!");
-        }
-        var newLi = document.createElement("LI");
-        var newA = document.createElement("a");
-
-        console.log(courseLinkUrl+""+obj.gradebook_collection[i].siteId);
-
-        courseListUl.appendChild(newLi);
-        newLi.appendChild(newA);
-        newA.setAttribute("href", courseLinkUrl+""+obj.gradebook_collection[i].siteId);
-        newA.setAttribute("target", "_blank");
-        newA.innerHTML = obj.gradebook_collection[i].siteName;
-    }
 }
 
 function getUserName() {
