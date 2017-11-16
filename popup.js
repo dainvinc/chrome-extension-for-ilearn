@@ -59,14 +59,22 @@ function printListOfCourses() {
 }
 
 function getUserName() {
+    console.log("Trying to get the Username");
+    
+    httpReq.onreadystatechange = function() {
+        if(httpReq.readyState == 4 && httpReq.status == 200) {        
+            document.write("You are logged in successfully now!"); 
+
+            var user = JSON.parse(httpReq.responseText);
+            userName.textContent = user.content_collection[0].author;
+    
+        } else {
+            console.log("There's something wrong with retrieving the username")
+        }        
+    }
+
     httpReq.open("GET", "https://ilearn.marist.edu/direct/content/my.json", false);
     httpReq.send();
-    if(httpReq.status != 200) {        
-       document.write("Please, login to continue."); 
-    }
-    var userResponse = httpReq.responseText;
-    var user = JSON.parse(userResponse);
-    userName.textContent = user.content_collection[0].author;
 }
 
 function getCwid() {
