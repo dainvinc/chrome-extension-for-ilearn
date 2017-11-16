@@ -89,7 +89,8 @@ function getCwid() {
             console.log("cwid: "+cwid);
             
             if(cwid.session_collection[0].userEid == null) {
-                console.log("Trying again for CWID...")
+                console.log("Trying again for CWID...");
+                httpReq.open("GET", "https://ilearn.marist.edu/direct/session.json", false);
                 httpReq.send();
             } else {
                 cwidSpan.textContent = cwid.session_collection[0].userEid.substring(0,8);   
