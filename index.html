@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>New Extension</title>
+    <style>
+        body {
+            border: 2px solid #B31B1B;
+            width: 500px;
+            padding: 10px;
+        }
+        
+        #title {
+            font-weight: normal;
+        }
+        
+        #username, #cwid {
+            font-size: 1.5em;
+            color: #B31B1B;
+        }
+        
+        .get-sub-list {
+            border: 0;
+            padding: 10px;
+            background: #B31B1B;
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .get-sub-list:hover {
+            cursor: pointer;
+            background: #001B1B;
+        }
+        
+        .subject-list ul {
+            font-size: 20px;
+            background: #F9F7F7;
+        }
+        
+        .go-back {
+            display: none;
+        }
+        
+    </style>
+    </head>
+    <body>    
+        <h2 id="title">Welcome to iLearn, <span id="username"></span></h2>
+        <div class="subject-list">
+            <p>CWID: <span id="cwid"></span></p>
+            <ul id="list"></ul>
+            <button class="get-sub-list">List of Subjects?</button>
+            <button id="favs" class="get-sub-list">Favorites?</button>
+        </div>
+        <a class="go-back" href="">Go Back</a>
+        <script src="popup.js"></script>
+    </body>
+</html>
