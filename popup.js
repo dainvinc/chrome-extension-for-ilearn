@@ -71,23 +71,24 @@ function getUserName() {
 
 function getCwid() {
     console.log("Trying to get CWID...");
+    
+    httpReq.onreadystatechange = function() {
+        if(httpReq.readyState == 4 && httpReq.status == 200) {
+            var cwid = JSON.parse(httpReq.responseText);
+            console.log("cwid: "+cwid);
+            if(cwid.session_collection[0].userEid == null) {
+                console.log("Trying again for CWID...")
+                httpReq.send();
+            } else {
+                cwidSpan.textContent = cwid.session_collection[0].userEid.substring(0,8);   
+            }
+        } else {
+            console.log("There's something wrong!")
+        }
+    }
+    
     httpReq.open("GET", "https://ilearn.marist.edu/direct/session.json", false);
     httpReq.send();
-    if(httpReq.status != 200) {
-        document.write("Not logged in!");
-        console.log(httpReq.status);
-    }
-    var cwidResponse = httpReq.responseText;
-    console.log("Cwid Resp: "+cwidResponse);
-    var cwid = JSON.parse(cwidResponse);
-    console.log("cwid: "+cwid);
-    
-    if(cwid.session_collection[0].userEid == null) {
-        console.log("Trying again for CWID...")
-        httpReq.send();
-    } else {
-        cwidSpan.textContent = cwid.session_collection[0].userEid.substring(0,8);   
-    }
 }
 
 function goBackFromCoursesList() {
