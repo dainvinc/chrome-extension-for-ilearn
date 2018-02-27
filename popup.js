@@ -8,5 +8,5 @@ chrome.tabs.query({active: true, lastFocusedWindow: true}, function(tabs) {
     if(tab.startsWith(link))
     	console.log('Its already a secured link');
     else
-    	chrome.tabs.create({url: "https:"+tab.substring(5,100)});
+    	chrome.tabs.create({url: "https:"+tab.substring(5,tab.length)});
 });
